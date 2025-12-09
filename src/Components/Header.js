@@ -23,7 +23,7 @@ export default function Learn() {
           gap: 2,
           width: "100% ",
           height: "15%",
-          flexWrap: "wrap",
+         
         }}
       >
         {/* Left Panel */}
