@@ -11,8 +11,6 @@ export default function NavActions() {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-      
-    
       <Box
         onClick={toggleTheme}
         sx={{
@@ -30,7 +28,6 @@ export default function NavActions() {
           transition: ".3s",
         }}
       >
-       
         <Box
           sx={{
             width: "20px",
@@ -47,7 +44,6 @@ export default function NavActions() {
         />
       </Box>
 
-    
       <Button
         variant="text"
         sx={{
@@ -58,23 +54,19 @@ export default function NavActions() {
           py: ".6rem",
           borderRadius: "8px",
           color: "white",
-        //    background: "rgba(219, 211, 174, 0.7)",
-            transition: ".3s",
-             border: '2px solid rgba(167,139,250,0.4)',
+          //    background: "rgba(219, 211, 174, 0.7)",
+          transition: ".3s",
+          border: "2px solid rgba(167,139,250,0.4)",
           "&:hover": {
             transform: "translateY(-2px)",
             boxShadow: "0 8px 20px rgba(45, 42, 56, 0.4)",
             background: "rgba(167,139,250,0.4)",
-           
-           
           },
-         
         }}
       >
         Log in
       </Button>
 
-   
       <Button
         sx={{
           fontWeight: 600,
@@ -88,13 +80,11 @@ export default function NavActions() {
           "&:hover": {
             transform: "translateY(-2px)",
             boxShadow: "0 8px 20px rgba(167,139,250,0.4)",
-           
           },
         }}
       >
         Contact us
       </Button>
-
     </Box>
   );
 }
