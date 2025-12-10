@@ -39,7 +39,6 @@ export default function FullScreen() {
               ))}
             </Grid>
 
-            {/* </Stack> */}
           </Stack>
         </Box>
       </Box>
