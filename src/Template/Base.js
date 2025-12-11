@@ -1,10 +1,40 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+
+
+import React from "react";
+import { Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
 import { items } from "../CardConfig/Cardconfig";
 import AppCard from "../components/cards";
 
 export default function FullScreen() {
+  const navigate = useNavigate();
+
+  // helper: safe path from item.link or title fallback
+  const resolveLink = (item) => {
+    if (item?.link) return item.link;
+    // fallback: make path from title, e.g. "Notes App" -> "/notes-app"
+    const slug = item?.title
+      ? "/" +
+        item.title
+          .toLowerCase()
+          .trim()
+          .replace(/[^\w\s-]/g, "")
+          .replace(/\s+/g, "-")
+      : "/";
+    return slug;
+  };
+
+  const handleOpen = (link) => {
+    if (!link) return;
+    navigate(link);
+  };
+
+  // Get Started -> first card, Learn More -> second card (if present)
+  const firstLink = items?.[0] ? resolveLink(items[0]) : "/notes";
+  const secondLink = items?.[1] ? resolveLink(items[1]) : "/tasks";
+
   return (
     <>
       <Box
@@ -41,7 +71,7 @@ export default function FullScreen() {
               sx={{
                 fontWeight: 700,
                 lineHeight: 1.1,
-                fontSize: { xs: "2.8rem", md: "4rem" }, 
+                fontSize: { xs: "2.8rem", md: "4rem" },
                 mb: 2,
                 marginRight: "300px",
               }}
@@ -49,7 +79,6 @@ export default function FullScreen() {
               Focus Panel <br /> Track Things
             </Typography>
 
-            
             <Typography
               variant="body1"
               sx={{
@@ -66,8 +95,7 @@ export default function FullScreen() {
               time — every time.
             </Typography>
 
-            
-            <Box sx={{ display: "flex", gap: 2,marginLeft:"100px" }}>
+            <Box sx={{ display: "flex", gap: 2, marginLeft: "100px" }}>
               <Box
                 component="button"
                 sx={{
@@ -84,6 +112,7 @@ export default function FullScreen() {
                     boxShadow: "0 8px 20px rgba(167,139,250,0.4)",
                   },
                 }}
+                onClick={() => handleOpen(firstLink)}
               >
                 Get Started
               </Box>
@@ -104,6 +133,7 @@ export default function FullScreen() {
                     background: "rgba(255,255,255,0.2)",
                   },
                 }}
+                onClick={() => handleOpen(secondLink)}
               >
                 Learn More
               </Box>
@@ -148,6 +178,7 @@ export default function FullScreen() {
                   title={item.title}
                   description={item.description}
                   image={item.image}
+                  onOpen={() => handleOpen(resolveLink(item))}
                   sx={{ width: 200 }}
                 />
               ))}

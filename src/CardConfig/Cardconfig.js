@@ -6,11 +6,13 @@ export const items = [
     title: "Task Manager",
     description: "Manage tasks and deadlines.",
     image: TaskManagerImg,
+    link: "/task-manager",
   },
 
   {
     title: "Notes App",
     description: "Store notes, ideas, lists & reminders.",
     image: NotesImg,
+    link: "/notepad-manager",
   },
 ];
