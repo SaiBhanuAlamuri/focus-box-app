@@ -19,7 +19,7 @@ export default function Learn() {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          height: "100vh",
+          // height: "100vh",
           gap: 2,
           width: "100% ",
           height: "15%",
