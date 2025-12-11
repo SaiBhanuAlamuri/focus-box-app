@@ -1,14 +1,9 @@
-import './App.css';
-import Base from './Template/Base';
-import Note from './Template/Note';
+// src/App.js
+import React from "react";
+import Note from "./Template/Note.js";
 
 function App() {
-  return (
-    <div className="App">
-      <Base/>
-      <Note/>
-    </div>
-  );
+  return <Note />;
 }
 
 export default App;

@@ -26,7 +26,6 @@ export default function Learn() {
          
         }}
       >
-        {/* Left Panel */}
 
         <Box
           sx={{
@@ -83,7 +82,7 @@ export default function Learn() {
             </Typography>
           </Box>
 
-          {/* Link Elements */}
+         
 
           <Stack spacing={2} direction="row" sx={{ marginLeft: 2 }}>
             {items.map((item, index) => (
@@ -105,7 +104,6 @@ export default function Learn() {
           </Stack>
         </Box>
 
-        {/* Right Panel */}
 
         <Box
           sx={{

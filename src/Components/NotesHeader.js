@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Grid,
-  Typography,
-  IconButton
-} from "@mui/material";
+import { Box, Grid, Typography, IconButton } from "@mui/material";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 const NotesHeader = ({ title = "Focuz Note" }) => {
-  
-
   const [dark, setDark] = useState(true);
 
   const handleToggle = () => {
@@ -25,10 +18,8 @@ const NotesHeader = ({ title = "Focuz Note" }) => {
       container
       alignItems="center"
       justifyContent="space-between"
-      sx={{ mb: { xs: 3, md: 4 } }}
+      sx={{ mb: { xs: `12`, md: 6 } }}
     >
-      
-    
       <Grid item>
         <Grid container spacing={1.5} alignItems="center">
           <Grid item>
@@ -59,7 +50,6 @@ const NotesHeader = ({ title = "Focuz Note" }) => {
           </Grid>
         </Grid>
       </Grid>
-
 
       <Grid item>
         <IconButton
