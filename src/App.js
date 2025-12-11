@@ -5,8 +5,8 @@ import TaskManager from './Template/TaskManager';
 function App() {
   return (
     <div className="App">
-      {/* <Base/> */}
-      <TaskManager/>
+      <Base/>
+      {/* <TaskManager/> */}
     </div>
   );
 }

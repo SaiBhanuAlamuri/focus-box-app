@@ -1,16 +1,16 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
-import TaskManagerHeader from "../Components/TaskHeader";
+import TaskManagerHeader from "../components/TaskHeader";
 
-import dummyTasks from "../Components/dummy";
-import TaskGrid from "../Components/TaskGrid";
+import dummyTasks from "../components/dummy";
+import TaskGrid from "../components/TaskGrid";
 
 
 //Bar
-import TaskBar from "../Components/TaskBar";
+import TaskBar from "../components/TaskBar";
 
 //filters
-import Filters from "../Components/Filter";
+import Filters from "../components/Filter";
 
 export default function TaskManager() {
 
