@@ -43,6 +43,7 @@ export default function FullScreen() {
                 lineHeight: 1.1,
                 fontSize: { xs: "2.8rem", md: "4rem" }, 
                 mb: 2,
+                marginRight: "300px",
               }}
             >
               Focus Panel <br /> Track Things
