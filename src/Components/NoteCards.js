@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { memo, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -6,99 +7,103 @@ import {
   Typography,
   IconButton,
   Stack,
+  Button,
 } from "@mui/material";
 import ArchiveOutlinedIcon from "@mui/icons-material/ArchiveOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import EditNoteIcon from "@mui/icons-material/EditNote";
+import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
-export default function NoteCard({ note, onArchive, onDelete, onEdit }) {
+function NoteCard({ note, onArchive, onDelete, onView }) {
+
+  const handleView = useCallback(() => onView && onView(note), [note, onView]);
+  const handleArchive = useCallback(() => onArchive && onArchive(note.id), [note.id, onArchive]);
+  const handleDelete = useCallback(() => onDelete && onDelete(note.id), [note.id, onDelete]);
+
+  const isDeleted = note.status === "deleted";
+  const isArchived = note.status === "archived";
+
   return (
     <Card
       sx={{
-          flexGrow: 1,
-        width: "100%",                 // 🔑 fill the Grid cell
-        height: "100%",
-        borderRadius: 3,
-        overflow: "hidden",
-        background: "rgba(17,24,39,0.92)",
-        border: "1px solid rgba(148,163,184,0.25)",
-        boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
+        width: "100%",
         display: "flex",
         flexDirection: "column",
-        transition: "0.25s ease",
-        "&:hover": {
-          transform: "translateY(-6px)",
-          boxShadow: "0 30px 60px rgba(0,0,0,0.5)",
-          borderColor: "rgba(168,85,247,0.6)",
-        },
+        justifyContent: "space-between",
+        minHeight: 200,
+        borderRadius: 3,
+        background: "rgba(17,24,39,0.92)",
+        border: "1px solid rgba(148,163,184,0.12)",
+        boxShadow: "0 16px 30px rgba(2,6,23,0.5)",
+        overflow: "hidden",
       }}
     >
       <CardContent sx={{ flexGrow: 1, px: { xs: 2, sm: 3 }, py: { xs: 1.5, sm: 2 } }}>
         <Typography
+          variant="subtitle1"
+          noWrap
           sx={{
             fontWeight: 700,
-            fontSize: { xs: "0.95rem", sm: "1rem", md: "1.05rem" }, // responsive text
+            fontSize: { xs: "1rem", sm: "1.05rem" },
+            color: "#e6eef8",
             mb: 1,
-            color: "#e2e8f0",
-            lineHeight: 1.2,
           }}
         >
-          {note.title || "Untitled Note"}
+          {note.title || "Untitled"}
         </Typography>
 
         <Typography
           sx={{
-            fontSize: { xs: "0.8rem", sm: "0.85rem" },
-            lineHeight: 1.4,
+            fontSize: { xs: "0.82rem", sm: "0.9rem" },
             color: "rgba(173,181,189,0.9)",
-            overflow: "hidden",
+            lineHeight: 1.4,
             display: "-webkit-box",
-            WebkitLineClamp: 3,
+            WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "normal",
+            overflowWrap: "anywhere",
+            wordBreak: "break-word",
           }}
         >
-          {note.content || "No content yet..."}
+          {note.content || ""}
         </Typography>
       </CardContent>
 
       <CardActions
         sx={{
           px: { xs: 2, sm: 3 },
-          py: 1.1,
+          py: 1,
           justifyContent: "space-between",
-          borderTop: "1px solid rgba(100,116,139,0.3)",
+          borderTop: "1px solid rgba(100,116,139,0.06)",
         }}
       >
-        <Typography
-          sx={{
-            fontSize: "0.7rem",
-            textTransform: "uppercase",
-            letterSpacing: ".05em",
-            color:
-              note.status === "active"
-                ? "#a78bfa"
-                : note.status === "archived"
-                ? "#facc15"
-                : "#ef4444",
-          }}
-        >
-          {note.status}
-        </Typography>
+        <Button size="small" variant="text" sx={{ color: "#a78bfa", textTransform: "none" }} onClick={handleView}>
+          View
+        </Button>
 
         <Stack direction="row" spacing={0.5}>
-          <IconButton size="small" onClick={() => onEdit(note.id)}>
-            <EditNoteIcon sx={{ fontSize: 18, color: "#cbd5e1" }} />
-          </IconButton>
+          {isDeleted ? (
+          
+            <IconButton size="small" onClick={handleDelete} title="Restore">
+              <RestoreFromTrashIcon sx={{ fontSize: 18, color: "#60a5fa" }} />
+            </IconButton>
+          ) : (
+            <>
+              <IconButton size="small" onClick={handleArchive} title={isArchived ? "Unarchive" : "Archive"}>
+                <ArchiveOutlinedIcon sx={{ fontSize: 17, color: isArchived ? "#facc15" : "#d1d5db" }} />
+              </IconButton>
 
-          <IconButton size="small" onClick={() => onArchive(note.id)}>
-            <ArchiveOutlinedIcon sx={{ fontSize: 17, color: "#d1d5db" }} />
-          </IconButton>
-
-          <IconButton size="small" onClick={() => onDelete(note.id)}>
-            <DeleteOutlineIcon sx={{ fontSize: 17, color: "#f87171" }} />
-          </IconButton>
+              <IconButton size="small" onClick={handleDelete} title="Delete">
+                <DeleteOutlineIcon sx={{ fontSize: 17, color: "#f87171" }} />
+              </IconButton>
+            </>
+          )}
         </Stack>
       </CardActions>
     </Card>
   );
 }
+
+export default memo(NoteCard);

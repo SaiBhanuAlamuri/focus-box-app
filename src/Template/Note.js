@@ -1,152 +1,168 @@
+// src/Template/Note.js
+import React, { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import { Box, Grid, CircularProgress, Container } from "@mui/material";
 
-
-import React, { useState, lazy, Suspense } from "react";
-import { Box, Grid, CircularProgress } from "@mui/material";
-import Container from "@mui/material/Container";
 import NotesHeader from "../components/NotesHeader";
 import NoteContext from "../components/NoteContext";
 import SearchFilterBar from "../components/NoteBar";
-import NewNoteDialog from "../components/NewNoteDialog";
+import ViewNoteDialog from "../components/ViewNoteDialog";
 
-//
 const NotesGrid = lazy(() => import("../components/NoteGrid"));
+
+const STORAGE_KEY = "my_notes_v1";
 
 export default function Note() {
   const [filter, setFilter] = useState("active");
   const [search, setSearch] = useState("");
-  const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const [notes, setNotes] = useState([
-    {
-      id: 1,
-      title: "Frontend cleanup",
-      content: "Refactor notes layout, add hero gradient.",
-      status: "active",
-    },
-    {
-      id: 2,
-      title: "API ideas",
-      content: "Design endpoints for notes CRUD, auth, and filters.",
-      status: "archived",
-    },
-    {
-      id: 3,
-      title: "Learning plan",
-      content: "Deep dive React, MUI Grid, theming, and context.",
-      status: "active",
-    },
-    {
-      id: 4,
-      title: "Trash example",
-      content: "This note is in deleted state for UI testing.",
-      status: "deleted",
-    },
-  ]);
+  // -------------------------
+  // notes state (loaded from localStorage)
+  // -------------------------
+  const [notes, setNotes] = useState(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return []; // start empty if nothing saved
+      return JSON.parse(raw);
+    } catch (e) {
+      console.error("Failed to read notes from localStorage:", e);
+      return [];
+    }
+  });
 
-  const openNewNoteDialog = () => setDialogOpen(true);
-  const closeNewNoteDialog = () => setDialogOpen(false);
+  // Persist notes to localStorage on every change
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    } catch (e) {
+      console.error("Failed to save notes to localStorage:", e);
+    }
+  }, [notes]);
 
-  const handleCreateNote = (notePayload) => {
-    const id = Date.now();
-    const newNote = {
-      id,
-      ...notePayload,
-    };
+  // -------------------------
+  // modal state in parent
+  // -------------------------
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [viewOpen, setViewOpen] = useState(false);
 
-    setNotes((prev) => [newNote, ...prev]);
-    setFilter("active");
-  };
+  // -------------------------
+  // handlers (useCallback to keep stable references)
+  // -------------------------
+  const handleView = useCallback((note) => {
+    setSelectedNote(note);
+    setViewOpen(true);
+  }, []);
 
-  const handleArchive = (id) => {
+  const handleNewNote = useCallback(() => {
+    setSelectedNote({ id: null, title: "", content: "", status: "active" });
+    setViewOpen(true);
+  }, []);
+
+  const handleCloseView = useCallback(() => {
+    setViewOpen(false);
+    setSelectedNote(null);
+  }, []);
+
+  const handleSaveNote = useCallback((payload) => {
+    if (!payload) return;
+    if (!payload.id) {
+      // create new note at top
+      const id = Date.now();
+      const newNote = { ...payload, id };
+      setNotes((prev) => [newNote, ...prev]);
+    } else {
+      // update existing
+      setNotes((prev) => prev.map((n) => (n.id === payload.id ? payload : n)));
+    }
+    setViewOpen(false);
+    setSelectedNote(null);
+  }, []);
+
+  // archive toggle (active <-> archived). Works only for non-deleted notes.
+  const handleArchive = useCallback((id) => {
     setNotes((prev) =>
       prev.map((n) =>
-        n.id === id ? { ...n, status: n.status === "archived" ? "active" : "archived" } : n
+        n.id === id
+          ? { ...n, status: n.status === "archived" ? "active" : "archived" }
+          : n
       )
     );
-  };
+  }, []);
 
-  const handleDelete = (id) => {
-    setNotes((prev) => prev.map((n) => (n.id === id ? { ...n, status: "deleted" } : n)));
-  };
+  // delete <-> restore toggle: if deleted -> restore to active, else mark deleted
+  const handleDeleteOrRestore = useCallback((id) => {
+    setNotes((prev) =>
+      prev.map((n) =>
+        n.id === id
+          ? { ...n, status: n.status === "deleted" ? "active" : "deleted" }
+          : n
+      )
+    );
+  }, []);
 
-  const handleEdit = (id) => {
-    console.log("Edit note", id);
-  };
-
+  // -------------------------
+  // filter + search
+  // -------------------------
   const filteredNotes = notes.filter((note) => {
     const matchesFilter = filter === "all" || note.status === filter;
-    const q = search.toLowerCase();
+    const q = (search || "").toLowerCase();
     const matchesSearch =
       !q || note.title.toLowerCase().includes(q) || note.content.toLowerCase().includes(q);
     return matchesFilter && matchesSearch;
   });
 
+  // -------------------------
+  // Render
+  // -------------------------
   return (
     <Box
       sx={{
         minHeight: "100vh",
         width: "100%",
         background: "linear-gradient(135deg, #1a2332 0%, #0f1419 100%)",
-        overflowX: "hidden", // kills sideways scroll from shadows
+        overflowX: "hidden",
+        py: { xs: 2, md: 4 },
       }}
     >
-      {/* Page-level Container: this is the authoritative centered width */}
-      <Container
-        maxWidth="lg"
-        sx={{
-          px: { xs: 2, sm: 3, md: 4 }, // side padding
-          py: { xs: 2, md: 4 },
-          color: "#f1f5f9",
-        }}
-      >
-        <Grid container direction="column" spacing={4}>
-          {/* HEADER */}
+      <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3, md: 4 }, color: "#f1f5f9" }}>
+        <Grid container direction="column" spacing={3}>
           <Grid item>
             <NotesHeader />
           </Grid>
 
-          {/* HERO SECTION */}
-          <Grid item sx={{ mt: 0 }}>
+          <Grid item>
             <NoteContext />
           </Grid>
 
-          {/* SEARCH + FILTER BAR */}
-          <Grid item sx={{ mt: 0 }}>
+          <Grid item>
             <SearchFilterBar
               filter={filter}
               onFilterChange={setFilter}
               search={search}
               onSearchChange={setSearch}
-              onNewNote={openNewNoteDialog} // opens modal when + New Note clicked
+              onNewNote={handleNewNote}
             />
           </Grid>
 
-          NOTES GRID
-          <Grid item sx={{ mt: 0, mb: 2 }}>
+          <Grid item>
             <Suspense
               fallback={
-                <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
-                  <CircularProgress color="inherit" />
+                <Box sx={{ py: 6, display: "flex", justifyContent: "center" }}>
+                  <CircularProgress />
                 </Box>
               }
             >
               <NotesGrid
                 notes={filteredNotes}
                 onArchive={handleArchive}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
+                onDelete={handleDeleteOrRestore}
+                onView={handleView}
               />
             </Suspense>
           </Grid>
         </Grid>
       </Container>
 
-      {/* NEW NOTE DIALOG */}
-      <NewNoteDialog
-        open={isDialogOpen}
-        onClose={closeNewNoteDialog}
-        onSave={handleCreateNote}
-      />
+      <ViewNoteDialog open={viewOpen} note={selectedNote} onClose={handleCloseView} onSave={handleSaveNote} />
     </Box>
   );
 }

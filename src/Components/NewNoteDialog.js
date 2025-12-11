@@ -1,4 +1,4 @@
-// src/components/NewNoteDialog.js
+
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -25,7 +25,7 @@ export default function NewNoteDialog({ open, onClose, onSave, defaultStatus = "
 
   const handleSave = () => {
     if (!title.trim()) return;
-    // Build note payload; caller will set id if desired
+ 
     const newNote = {
       title: title.trim(),
       content: content.trim(),

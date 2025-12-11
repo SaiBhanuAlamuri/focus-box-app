@@ -1,75 +1,74 @@
-// NoteContext.js
+
 import React from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 
-const CONTENT_MAX = 1100; // <-- set this to the same numeric width you use for search/cards or use Container maxWidth="lg"
+const CONTENT_MAX = 1100; 
 
 export default function NoteContext() {
   return (
     <Grid container justifyContent="center">
-      <Grid item xs={12}>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          width: "100%",
+          maxWidth: CONTENT_MAX,
+          mx: "auto",
+          textAlign: { xs: "left", md: "center" },
+          px: { xs: 2, sm: 3, md: 0 },
+        }}
+      >
+        {/* TITLE */}
         <Box
           sx={{
-            width: "100%",
-            maxWidth: { xs: "100%", md: CONTENT_MAX }, // full width on small screens, fixed on md+
-            mx: "auto",                                   // center it inside page
-            boxSizing: "border-box",
-            background: "rgba(15,23,42,0.9)",
-            borderRadius: "16px",
-            border: "1px solid rgba(148,163,184,0.12)",
-            boxShadow: "0 18px 45px rgba(15,23,42,0.75)",
-            px: { xs: 3, sm: 4, md: 6 },
-            py: { xs: 3, sm: 4, md: 5 },
-            color: "white",
-            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: { xs: "flex-start", md: "center" },
+            gap: { xs: 1.5, sm: 2, md: 2.5 },
+            mb: 1.2,
+            flexWrap: "nowrap",
           }}
         >
-          <Typography
+          <NoteOutlinedIcon
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: { xs: "flex-start", md: "center" },
-              gap: { xs: "12px", sm: "18px", md: "22px" },
-              fontWeight: 700,
-              fontSize: { xs: "1.5rem", sm: "1.8rem", md: "2.1rem" },
+              fontSize: { xs: 28, sm: 32, md: 36 },
               background: "linear-gradient(135deg,#c4b5fd,#8b5cf6)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              mb: 1.5,
             }}
-          >
-            <NoteOutlinedIcon
-              sx={{
-                fontSize: { xs: 26, sm: 30, md: 34 },
-                background: "inherit",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            />
-            FocuZ Note
-          </Typography>
+          />
 
           <Typography
-            variant="subtitle1"
             sx={{
-              opacity: 0.9,
-              fontWeight: 300,
-              fontSize: { xs: ".85rem", sm: ".9rem", md: "1rem" },
-              textAlign: { xs: "left", md: "center" },
-              mx: { md: "auto" },
-
-              /* THE IMPORTANT PART — let long strings wrap instead of expanding the container */
+              fontWeight: 700,
+              fontSize: { xs: "1.6rem", sm: "1.9rem", md: "2.3rem" },
+              background: "linear-gradient(135deg,#c4b5fd,#8b5cf6)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
               whiteSpace: "normal",
-              overflowWrap: "anywhere",  // modern, breaks anywhere if needed
-              wordBreak: "break-word",   // fallback
-              hyphens: "auto",
+              overflowWrap: "anywhere",
             }}
           >
-            A simple and organized way to keep your notes and be in track
-            {/* no unbroken string will expand the box now */}
+            FocuZ Note
           </Typography>
         </Box>
+
+       
+        <Typography
+          sx={{
+            opacity: 0.85,
+            fontWeight: 300,
+            fontSize: { xs: ".85rem", sm: ".95rem", md: "1.05rem" },
+            maxWidth: 800,
+            mx: { xs: 0, md: "auto" },
+            whiteSpace: "normal",
+            overflowWrap: "anywhere",
+            lineHeight: 1.5,
+          }}
+        >
+          A simple and organized way to keep your notes and be in track
+        </Typography>
       </Grid>
     </Grid>
   );
