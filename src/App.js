@@ -1,9 +1,8 @@
 // src/App.js
-import React from "react";
-import Note from "./Template/Note.js";
+import Base from "./Template/Base.js";
 
 function App() {
-  return <Note />;
+  return <Base />;
 }
 
 export default App;
