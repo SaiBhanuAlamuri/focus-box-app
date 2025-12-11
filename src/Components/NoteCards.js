@@ -30,7 +30,7 @@ function NoteCard({ note, onArchive, onDelete, onView }) {
   return (
     <Card
       sx={{
-        width: "100%",
+        width: "300px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",

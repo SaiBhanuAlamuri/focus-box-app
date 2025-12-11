@@ -15,7 +15,7 @@ export default function NotesGrid({
     <Grid
       container
       spacing={{ xs: 2, sm: 3, md: 3 }}
-      justifyContent="flex-start"
+      justifyContent="center"
       alignItems="stretch"
       sx={{ width: "100%", mx: "auto" }}
     >
