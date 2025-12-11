@@ -1,4 +1,3 @@
-
 import React, { memo, useCallback } from "react";
 import {
   Card,
@@ -15,10 +14,15 @@ import RestoreFromTrashIcon from "@mui/icons-material/RestoreFromTrash";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function NoteCard({ note, onArchive, onDelete, onView }) {
-
   const handleView = useCallback(() => onView && onView(note), [note, onView]);
-  const handleArchive = useCallback(() => onArchive && onArchive(note.id), [note.id, onArchive]);
-  const handleDelete = useCallback(() => onDelete && onDelete(note.id), [note.id, onDelete]);
+  const handleArchive = useCallback(
+    () => onArchive && onArchive(note.id),
+    [note.id, onArchive]
+  );
+  const handleDelete = useCallback(
+    () => onDelete && onDelete(note.id),
+    [note.id, onDelete]
+  );
 
   const isDeleted = note.status === "deleted";
   const isArchived = note.status === "archived";
@@ -38,7 +42,9 @@ function NoteCard({ note, onArchive, onDelete, onView }) {
         overflow: "hidden",
       }}
     >
-      <CardContent sx={{ flexGrow: 1, px: { xs: 2, sm: 3 }, py: { xs: 1.5, sm: 2 } }}>
+      <CardContent
+        sx={{ flexGrow: 1, px: { xs: 2, sm: 3 }, py: { xs: 1.5, sm: 2 } }}
+      >
         <Typography
           variant="subtitle1"
           noWrap
@@ -79,20 +85,33 @@ function NoteCard({ note, onArchive, onDelete, onView }) {
           borderTop: "1px solid rgba(100,116,139,0.06)",
         }}
       >
-        <Button size="small" variant="text" sx={{ color: "#a78bfa", textTransform: "none" }} onClick={handleView}>
+        <Button
+          size="small"
+          variant="text"
+          sx={{ color: "#a78bfa", textTransform: "none" }}
+          onClick={handleView}
+        >
           View
         </Button>
 
         <Stack direction="row" spacing={0.5}>
           {isDeleted ? (
-          
             <IconButton size="small" onClick={handleDelete} title="Restore">
               <RestoreFromTrashIcon sx={{ fontSize: 18, color: "#60a5fa" }} />
             </IconButton>
           ) : (
             <>
-              <IconButton size="small" onClick={handleArchive} title={isArchived ? "Unarchive" : "Archive"}>
-                <ArchiveOutlinedIcon sx={{ fontSize: 17, color: isArchived ? "#facc15" : "#d1d5db" }} />
+              <IconButton
+                size="small"
+                onClick={handleArchive}
+                title={isArchived ? "Unarchive" : "Archive"}
+              >
+                <ArchiveOutlinedIcon
+                  sx={{
+                    fontSize: 17,
+                    color: isArchived ? "#facc15" : "#d1d5db",
+                  }}
+                />
               </IconButton>
 
               <IconButton size="small" onClick={handleDelete} title="Delete">

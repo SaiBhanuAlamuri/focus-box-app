@@ -1,9 +1,8 @@
-
 import React from "react";
 import { Grid, Typography, Box } from "@mui/material";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 
-const CONTENT_MAX = 1100; 
+const CONTENT_MAX = 1100;
 
 export default function NoteContext() {
   return (
@@ -54,7 +53,6 @@ export default function NoteContext() {
           </Typography>
         </Box>
 
-       
         <Typography
           sx={{
             opacity: 0.85,

@@ -23,10 +23,8 @@ export default function Learn() {
           gap: 2,
           width: "100% ",
           height: "15%",
-         
         }}
       >
-
         <Box
           sx={{
             display: "flex",
@@ -82,8 +80,6 @@ export default function Learn() {
             </Typography>
           </Box>
 
-         
-
           <Stack spacing={2} direction="row" sx={{ marginLeft: 2 }}>
             {items.map((item, index) => (
               <Typography
@@ -103,7 +99,6 @@ export default function Learn() {
             ))}
           </Stack>
         </Box>
-
 
         <Box
           sx={{

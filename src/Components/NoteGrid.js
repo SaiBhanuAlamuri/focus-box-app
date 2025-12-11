@@ -7,7 +7,7 @@ export default function NotesGrid({
   notes,
   onArchive,
   onDelete,
-  onView,   // <- correct & required
+  onView,
 }) {
   if (!notes || notes.length === 0) return null;
 
@@ -23,10 +23,10 @@ export default function NotesGrid({
         <Grid
           item
           key={note.id}
-          xs={12}     // 1 per row on mobile
-          sm={6}      // 2 per row on small screens
-          md={4}      // 3 per row on tablets
-          lg={3}      // 4 per row desktop
+          xs={12} 
+          sm={6} 
+          md={4} 
+          lg={3}  
           xl={3}
           sx={{ display: "flex", alignItems: "stretch" }}
         >
@@ -46,7 +46,7 @@ export default function NotesGrid({
               note={note}
               onArchive={onArchive}
               onDelete={onDelete}
-              onView={() => onView(note)}  // 🔥 Correct passing of note object
+              onView={() => onView(note)}
             />
           </Suspense>
         </Grid>

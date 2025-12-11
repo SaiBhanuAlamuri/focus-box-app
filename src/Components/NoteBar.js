@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Grid,
@@ -10,7 +9,6 @@ import {
   Box,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-
 
 export default function NoteBarSimple({
   filter,
@@ -26,7 +24,8 @@ export default function NoteBarSimple({
         borderRadius: 3,
         border: "1px solid rgba(30,64,175,0.08)",
         boxShadow: "0 10px 30px rgba(2,6,23,0.45)",
-        background: "linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.96))",
+        background:
+          "linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.96))",
         px: { xs: 2, md: 3 },
         py: { xs: 2, md: 2.5 },
         mb: { xs: 3, md: 4 },
@@ -34,16 +33,13 @@ export default function NoteBarSimple({
       }}
     >
       <Grid container alignItems="center" spacing={2}>
-     
-        <Grid item xs={12} md={7} sx={{ minWidth: 0 }} lg= {2}>
+        <Grid item xs={12} md={7} sx={{ minWidth: 0 }} lg={2}>
           <TextField
-          
             fullWidth
             placeholder="Search notes..."
             variant="outlined"
             size="large"
             value={search}
-            
             onChange={(e) => onSearchChange(e.target.value)}
             InputProps={{
               startAdornment: (
@@ -53,10 +49,9 @@ export default function NoteBarSimple({
               ),
             }}
             sx={{
-          
               minWidth: 0,
               "& .MuiOutlinedInput-root": {
-               maxWidth: { xs: "100%", sm: "100%", md: "500px", lg: "650px" },
+                maxWidth: { xs: "100%", sm: "100%", md: "500px", lg: "650px" },
                 borderRadius: 999,
                 bgcolor: "#020617",
                 color: "#e5e7eb",
@@ -68,7 +63,6 @@ export default function NoteBarSimple({
           />
         </Grid>
 
-  
         <Grid
           item
           xs={12}
@@ -77,7 +71,7 @@ export default function NoteBarSimple({
             display: "flex",
             justifyContent: { xs: "flex-start", md: "flex-end" },
             alignItems: "center",
-         
+
             gap: 1,
             minWidth: 0,
           }}
@@ -88,7 +82,7 @@ export default function NoteBarSimple({
               gap: 2,
               alignItems: "center",
               flexWrap: "wrap",
-      
+
               "& .MuiToggleButtonGroup-root": { flexShrink: 1 },
             }}
           >
@@ -135,7 +129,7 @@ export default function NoteBarSimple({
                 color: "#020617",
                 boxShadow: "0 10px 30px rgba(167,139,250,0.35)",
                 whiteSpace: "nowrap",
-         
+
                 minWidth: 0,
               }}
             >

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -12,7 +11,12 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function NewNoteDialog({ open, onClose, onSave, defaultStatus = "active" }) {
+export default function NewNoteDialog({
+  open,
+  onClose,
+  onSave,
+  defaultStatus = "active",
+}) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -25,7 +29,7 @@ export default function NewNoteDialog({ open, onClose, onSave, defaultStatus = "
 
   const handleSave = () => {
     if (!title.trim()) return;
- 
+
     const newNote = {
       title: title.trim(),
       content: content.trim(),
@@ -50,16 +54,35 @@ export default function NewNoteDialog({ open, onClose, onSave, defaultStatus = "
         },
       }}
     >
-      <DialogTitle sx={{ fontWeight: 700, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <DialogTitle
+        sx={{
+          fontWeight: 700,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         Create Note
-        <IconButton onClick={onClose} size="small" sx={{ color: "text.primary" }}>
+        <IconButton
+          onClick={onClose}
+          size="small"
+          sx={{ color: "text.primary" }}
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
 
       <DialogContent dividers sx={{ pt: 1 }}>
         <Box sx={{ mb: 2 }}>
-          <Box component="label" sx={{ display: "block", mb: 1, fontSize: ".9rem", color: "text.secondary" }}>
+          <Box
+            component="label"
+            sx={{
+              display: "block",
+              mb: 1,
+              fontSize: ".9rem",
+              color: "text.secondary",
+            }}
+          >
             Title
           </Box>
           <TextField
@@ -73,7 +96,15 @@ export default function NewNoteDialog({ open, onClose, onSave, defaultStatus = "
         </Box>
 
         <Box>
-          <Box component="label" sx={{ display: "block", mb: 1, fontSize: ".9rem", color: "text.secondary" }}>
+          <Box
+            component="label"
+            sx={{
+              display: "block",
+              mb: 1,
+              fontSize: ".9rem",
+              color: "text.secondary",
+            }}
+          >
             Content
           </Box>
           <TextField
@@ -89,7 +120,11 @@ export default function NewNoteDialog({ open, onClose, onSave, defaultStatus = "
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={onClose} variant="outlined" sx={{ textTransform: "none", borderRadius: 3 }}>
+        <Button
+          onClick={onClose}
+          variant="outlined"
+          sx={{ textTransform: "none", borderRadius: 3 }}
+        >
           Cancel
         </Button>
 
