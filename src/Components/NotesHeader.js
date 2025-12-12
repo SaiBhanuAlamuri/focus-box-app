@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Grid, Typography, IconButton } from "@mui/material";
 import NoteOutlinedIcon from "@mui/icons-material/NoteOutlined";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { useCustomTheme } from "../Theme/themeConfig";
 
 const NotesHeader = ({ title = "FocuZ Note" }) => {
-  const [dark, setDark] = useState(true);
+  const { mode, toggleMode } = useCustomTheme();     
 
-  const handleToggle = () => {
-    setDark(!dark);
-    document.body.classList.toggle("light-mode");
-    document.body.classList.toggle("dark-mode");
-  };
+  const dark = mode === "dark";
 
   return (
     <Grid
@@ -20,11 +17,10 @@ const NotesHeader = ({ title = "FocuZ Note" }) => {
       justifyContent="space-between"
       sx={{
         mb: { xs: 2, sm: 3, md: 4 },
-        flexWrap: "wrap",   
-        rowGap: { xs: 1.5, sm: 0 }
+        flexWrap: "wrap",
+        rowGap: { xs: 1.5, sm: 0 },
       }}
     >
-
       <Grid item sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
         <Box
           sx={{
@@ -36,7 +32,7 @@ const NotesHeader = ({ title = "FocuZ Note" }) => {
             justifyContent: "center",
             background: "radial-gradient(circle at 20% 20%, #a855f7, #4f46e5)",
             boxShadow: "0 0 20px rgba(168, 85, 247, 0.6)",
-            flexShrink: 0     
+            flexShrink: 0,
           }}
         >
           <NoteOutlinedIcon sx={{ fontSize: { xs: 18, sm: 20 }, color: "#fff" }} />
@@ -46,22 +42,21 @@ const NotesHeader = ({ title = "FocuZ Note" }) => {
           variant="h5"
           sx={{
             fontWeight: 600,
-            color: "#f9fafb",
+            color: "text.primary",        
             fontSize: { xs: "1.05rem", sm: "1.25rem" },
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            maxWidth: { xs: "160px", sm: "100%" }
+            maxWidth: { xs: "160px", sm: "100%" },
           }}
         >
           {title}
         </Typography>
       </Grid>
 
-
       <Grid item>
         <IconButton
-          onClick={handleToggle}
+          onClick={toggleMode}              
           sx={{
             width: { xs: 46, sm: 54 },
             height: { xs: 24, sm: 28 },

@@ -1,4 +1,5 @@
-import { Box, Grid, Typography } from "@mui/material";
+import React from "react";
+import { Box, Grid, Typography, useTheme } from "@mui/material";
 import TaskCard from "./TaskCard";
 
 export default function TaskGrid({
@@ -8,17 +9,24 @@ export default function TaskGrid({
   onDelete,
   onRestore,
 }) {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
-        width: "75%",
-        px: { xs: 2, sm: 4, md: 10, lg: 15 },
-        mt: 4,
+        width: "100%",
+        maxWidth: 1200,
         mx: "auto",
-       
+        mt: 4,
+        px: { xs: 2, sm: 3, md: 0 },
       }}
     >
-      <Grid container spacing={3} justifyContent={'center'}>
+      <Grid
+        container
+        spacing={3}
+        justifyContent="center"
+        alignItems="flex-start"
+      >
         {tasks.map((task) => (
           <Grid
             key={task.id}
@@ -27,26 +35,31 @@ export default function TaskGrid({
             sm={6}
             md={4}
             lg={3}
-            sx={{ display: "flex", justifyContent: "center" }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
-            <TaskCard
-              task={task}
-              onEdit={onEdit}
-              onComplete={onComplete}
-              onDelete={onDelete}
-              onRestore={onRestore}
-            />
+            <Box sx={{ width: "100%", maxWidth: 320 }}>
+              <TaskCard
+                task={task}
+                onEdit={onEdit}
+                onComplete={onComplete}
+                onDelete={onDelete}
+                onRestore={onRestore}
+              />
+            </Box>
           </Grid>
         ))}
       </Grid>
 
-      {tasks.length === 0 && (
+      {(!tasks || tasks.length === 0) && (
         <Typography
           sx={{
-            color: "#d2d2d2",
+            color: theme.palette.text.secondary,
             textAlign: "center",
             mt: 6,
-            fontSize: "1.2rem",
+            fontSize: { xs: "1.05rem", sm: "1.15rem" },
           }}
         >
           No tasks found — add a new task!

@@ -1,3 +1,5 @@
+
+import React from "react";
 import {
   Box,
   Button,
@@ -5,14 +7,21 @@ import {
   TextField,
   IconButton,
   InputAdornment,
+  useMediaQuery,
 } from "@mui/material";
 import { FilterList } from "@mui/icons-material";
-import { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import { useTheme as useMUITheme } from "@mui/material/styles";
 
-export default function Filters() {
-  const [active, setActive] = useState("in-progress");
-  const [search, setSearch] = useState("");
+export default function Filters({
+  activeFilter = "in-progress",
+  onFilterChange = () => {},
+  searchValue = "",
+  onSearchChange = () => {},
+}) {
+  const theme = useMUITheme();
+  const isDark = theme.palette.mode === "dark";
+  const smUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   const filters = [
     { key: "in-progress", label: "In Progress" },
@@ -22,141 +31,133 @@ export default function Filters() {
   ];
 
   return (
-   <Box
-
-   spacing={2}
-  sx={{
-    width: "61%",
-    minHeight: "100px",
-    display: "flex",                
-    justifyContent: "center",        
-    alignItems: "center",            
-    px: { xs: 2, sm: 4, md: 10, lg: 15 },
-     flexDirection: "column",
-     gap: 2,
-    mt: 3,
-    mx: "auto",
-    
-
-    background: "rgba(255,255,255,0.06)",
-    borderRadius: "16px",
-    border: "1.5px solid rgba(150, 130, 209, 0.67)",
-    boxShadow: "0 8px 25px rgba(0,0,0,0.3)",
-    backdropFilter: "blur(12px)",
-  }}
->
-
-  <Box sx={{ width: "100%", maxWidth: "1400px" }}>
-      <Stack
-        direction="row"
-        spacing={2}
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        px: { xs: 2, sm: 4, md: 6, lg: 8 },
+        mt: 3,
+      }}
+    >
+      <Box
         sx={{
-          mb: 3,
-          width: "100%",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          alignItems: "center",
-          
-          mt: 2,
+          width: { xs: "100%", md: "85%", lg: "70%" },
+          background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
+          borderRadius: 2,
+          border: `1.5px solid ${
+            isDark ? "rgba(150,130,209,0.25)" : "rgba(150,130,209,0.18)"
+          }`,
+          boxShadow: isDark ? "0 8px 25px rgba(0,0,0,0.6)" : "0 6px 18px rgba(0,0,0,0.06)",
+          backdropFilter: "blur(8px)",
+          px: { xs: 2, sm: 3 },
+          py: { xs: 2.5, sm: 3 },
         }}
       >
-        <TextField
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search tasks..."
-          variant="outlined"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: "rgba(233, 233, 233, 1)" }} />
-              </InputAdornment>
-            ),
-          }}
-          sx={{
-            order: { xs: 1, sm: 1, md: 1, lg: 1 },
-            width: {
-              xs: "90%",
-              sm: "70%",
-              md: "50%",
-              lg: "33%",
-            },
-
-            input: {
-              color: "white",
-              background: "rgba(255,255,255,0.05)",
-              borderTopLeftRadius: "20px",
-              borderBottomLeftRadius: "20px",
-            },
-
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "12px",
-
-              "& fieldset": {
-                borderColor: "#a78bfa",
-                borderWidth: "2px",
-                borderStyle: "solid",
-              },
-              "&:hover fieldset": {
-                borderColor: "rgba(255,255,255,0.3)",
-                borderWidth: "2px",
-                borderStyle: "solid",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "#a78bfa",
-                borderWidth: "2px",
-                borderStyle: "solid",
-              },
-            },
-          }}
-        />
-
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 2,
-            alignItems: "center",
-
-            width: { xs: "100%", sm: "100%", md: "auto" },
-            justifyContent: { xs: "center", sm: "center", md: "flex-start" },
-            mt: { xs: 2, sm: 3, md: 0 },
-
-            order: { xs: 2, sm: 2, md: 1 },
-            // backgroundColor:"red"
-          }}
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={2}
+          alignItems="center"
+          justifyContent="space-between"
         >
-          
-          <IconButton
+          {/* Search */}
+          <Box sx={{ width: { xs: "100%", md: "55%", lg: "45%" } }}>
+            <TextField
+              value={searchValue}
+              onChange={(e) => onSearchChange(e.target.value)}
+              placeholder="Search tasks..."
+              variant="outlined"
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: theme.palette.text.secondary }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 2,
+                  background: isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)",
+                },
+                "& .MuiInputBase-input": {
+                  color: theme.palette.text.primary,
+                },
+                "& .MuiInputLabel-root": {
+                  color: theme.palette.text.secondary,
+                },
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: isDark ? "rgba(167,139,250,0.12)" : "rgba(167,139,250,0.18)",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
+            />
+          </Box>
+
+       
+          <Box
             sx={{
-              background: "rgba(255,255,255,0.08)",
-              border: "1px solid rgba(255,255,255,0.15)",
-              color: "white",
-              "&:hover": { background: "rgba(255,255,255,0.15)" },
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              width: { xs: "100%", md: "auto" },
+              justifyContent: { xs: "center", md: "flex-end" },
+              mt: { xs: 1.5, md: 0 },
+              flexWrap: "wrap",
             }}
           >
-            <FilterList />
-          </IconButton>
-          {filters.map((item) => (
-            <Button
-              key={item.key}
-              onClick={() => setActive(item.key)}
+            <IconButton
+              aria-label="filters"
               sx={{
-                padding: "8px 20px",
-                borderRadius: "12px",
-                whiteSpace: "nowrap",
-                background:
-                  active === item.key
-                    ? "linear-gradient(135deg, #c4b5fd, #a78bfa)"
-                    : "rgba(255,255,255,0.05)",
-                color: active === item.key ? "#1a2332" : "white",
+                background: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)",
+                border: `1px solid ${isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.06)"}`,
+                color: theme.palette.text.primary,
+                "&:hover": {
+                  background: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)",
+                },
               }}
             >
-              {item.label}
-            </Button>
-          ))}
-        </Box>
-      </Stack>
+              <FilterList />
+            </IconButton>
 
+            {filters.map((item) => {
+              const active = activeFilter === item.key;
+              return (
+                <Button
+                  key={item.key}
+                  onClick={() => onFilterChange(item.key)}
+                  sx={{
+                    padding: "8px 16px",
+                    borderRadius: 2,
+                    whiteSpace: "nowrap",
+                    minWidth: 92,
+                    color: active ? theme.palette.getContrastText(theme.palette.primary.main) : theme.palette.text.primary,
+                    background: active
+                      ? `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.primary.main})`
+                      : isDark
+                      ? "rgba(255,255,255,0.02)"
+                      : "rgba(0,0,0,0.02)",
+                    border: active ? "none" : `1px solid ${isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.06)"}`,
+                    boxShadow: active ? (isDark ? "0 8px 20px rgba(167,139,250,0.12)" : "0 6px 16px rgba(167,139,250,0.08)") : "none",
+                    textTransform: "none",
+                    fontWeight: 600,
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: active ? theme.shadows[6] : theme.shadows[1],
+                    },
+                  }}
+                >
+                  {item.label}
+                </Button>
+              );
+            })}
+          </Box>
+        </Stack>
       </Box>
     </Box>
   );

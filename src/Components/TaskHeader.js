@@ -1,121 +1,113 @@
-import { Box, Typography, Button, Grid } from "@mui/material";
-import { useState } from "react";
+
+import React from "react";
+import { Box, Typography, Grid, useTheme, useMediaQuery, IconButton } from "@mui/material";
+import { useTheme as useMUITheme } from "@mui/material/styles";
+import { useCustomTheme } from "../Theme/themeConfig"; 
 
 export default function TaskManagerHeader() {
-  const [darkMode, setDarkMode] = useState(true);
+  const muiTheme = useMUITheme();
+  const matchesSm = useMediaQuery(muiTheme.breakpoints.up("sm"));
+  const { mode, toggleMode } = useCustomTheme();
+  const isDark = mode === "dark";
 
-  const toggleTheme = () => setDarkMode(!darkMode);
   return (
     <Grid
       container
-      direction={"row"}
+      alignItems="center"
+      justifyContent="space-between"
       sx={{
         width: "100%",
-        alignItems: "center",
-        justifyContent: "space-between",
-         px: { xs: 2, sm: 4, md: 10, lg: 15 },
-        
-        py: 2,
+        px: { xs: 2, sm: 4, md: 10, lg: 15 },
+        py: { xs: 1.5, sm: 2 },
         overflow: "hidden",
+        background: "transparent",
       }}
     >
-      <Grid
-        item
-        xs={6}
-        sx={{
-          height: 60,
-          display: "flex",
-          alignItems: "center",
-
-          gap: 1,
-        }}
-      >
+    
+      <Grid item xs="auto" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
         <Box
           sx={{
-            width: "32px",
-            height: "32px",
-            background: "linear-gradient(135deg, #a78bfa, rgba(139, 92, 246, 1))",
-            borderRadius: "6px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-
-            fontSize: "20px",
-
-            fontWeight: "600",
-            color: "white",
+            width: 36,
+            height: 36,
+            borderRadius: 1,
+            display: "grid",
+            placeItems: "center",
+            background: "linear-gradient(135deg, #a78bfa, #8b5cf6)",
+            color: muiTheme.palette.getContrastText("#8b5cf6"),
+            fontWeight: 700,
+            fontSize: 18,
           }}
+          aria-hidden
         >
-          {" "}
           ✓
         </Box>
 
         <Typography
+          noWrap
           sx={{
-            fontSize:{xs: "1.2rem", sm: "1.5rem" },
-            fontWeight: "500",
-            color: "white",
-            whiteSpace: "nowrap",
+            fontSize: { xs: "1.05rem", sm: "1.25rem" },
+            fontWeight: 600,
+            color: "text.primary",
+            ml: 0.5,
           }}
         >
           TaskFlow
         </Typography>
       </Grid>
 
-      <Grid
-        item
-        xs={6}
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
-      >
+    
+      <Grid item xs="auto" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      
         <Box
-          onClick={toggleTheme}
+          onClick={toggleMode}
+          role="button"
+          aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") toggleMode();
+          }}
           sx={{
-            width: "55px",
-            height: "28px",
-            position: "relative",
+            width: 56,
+            height: 30,
+            borderRadius: 20,
             cursor: "pointer",
-            borderRadius: "20px",
-            transition: "all 0.35s ease",
-
-           
-            background: darkMode
-              ? "linear-gradient(135deg, rgba(140, 120, 230, 0.6), rgba(90, 70, 190, 0.4))"
-              : "linear-gradient(135deg, rgba(255,255,255,0.7), rgba(230,240,255,0.6))",
-
-            backdropFilter: "blur(8px)",
-
-         
-            border: darkMode
-              ? "2px solid rgba(170,140,255,0.8)"
-              : "2px solid rgba(180,200,255,0.6)",
-
-            boxShadow: darkMode
-              ? "0 0 12px rgba(150,110,255,0.8)"
-              : "0 0 10px rgba(190,220,255,0.7)",
+            display: "flex",
+            alignItems: "center",
+            p: "3px",
+            transition: "background 200ms ease, box-shadow 200ms ease",
+            background: isDark
+              ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}33, ${muiTheme.palette.primary.main}33)`
+              : muiTheme.palette.action.hover,
+            border: `1px solid ${isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)"}`,
+            boxShadow: isDark ? `0 6px 18px ${muiTheme.palette.primary.main}20` : muiTheme.shadows[1],
+            display: "flex",
+            alignItems: "center",
+            justifyContent: isDark ? "flex-start" : "flex-end",
           }}
-        ></Box>
+        >
+          <Box
+            sx={{
+              width: 22,
+              height: 22,
+              borderRadius: "50%",
+              background: isDark ? muiTheme.palette.background.paper : muiTheme.palette.common.white,
+              boxShadow: muiTheme.shadows[2],
+              transition: "transform 220ms ease",
+              transform: isDark ? "translateX(0)" : "translateX(0)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: isDark ? muiTheme.palette.primary.main : muiTheme.palette.text.primary,
+              fontSize: 12,
+              fontWeight: 700,
+            }}
+          >
+            {isDark ? "🌙" : "☀️"}
+          </Box>
+        </Box>
 
-        <Box
-          onClick={toggleTheme}
-          sx={{
-            width: "20px",
-            height: "20px",
-            borderRadius: "50%",
-            position: "relative",
-            backgroundColor: darkMode ? "#f4f5f8ff" : "#111010ff",
-
-            left: darkMode ? "-25px" : "-49px",
-            transition: "0.3s",
-          }}
-        ></Box>
+      
       </Grid>
     </Grid>
-
-
-
   );
 }

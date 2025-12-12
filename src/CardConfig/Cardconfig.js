@@ -1,4 +1,4 @@
-// src/CardConfig/Cardconfig.js
+
 import TaskManagerImg from "../assets/images/TaskManager.jpg";
 import NotesImg from "../assets/images/NoteLogo.png";
 export const items = [
@@ -11,7 +11,7 @@ export const items = [
 
   {
     title: "Notes App",
-    description: "Store notes, ideas, lists & reminders.",
+    description: "Manage tasks and deadlines",
     image: NotesImg,
     link: "/notepad-manager",
   },

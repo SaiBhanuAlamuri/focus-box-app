@@ -1,6 +1,14 @@
 
-import React, { useState, useEffect, useCallback, lazy, Suspense, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  lazy,
+  Suspense,
+  useMemo,
+} from "react";
 import { Box, Grid, CircularProgress, Container } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 import NotesHeader from "../components/NotesHeader";
 import NoteContext from "../components/NoteContext";
@@ -22,6 +30,8 @@ function normalizeNote(n) {
 }
 
 export default function Note() {
+  const theme = useTheme();
+
   const [filter, setFilter] = useState("active");
   const [search, setSearch] = useState("");
 
@@ -31,10 +41,9 @@ export default function Note() {
       if (!raw) return [];
       const parsed = JSON.parse(raw);
       if (!Array.isArray(parsed)) return [];
-
       return parsed.map(normalizeNote);
     } catch (e) {
-      console.error("Failed to read notes from localStorage:", e);
+      console.error("notes:init failed:", e);
       return [];
     }
   });
@@ -43,7 +52,7 @@ export default function Note() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
     } catch (e) {
-      console.error("Failed to save notes to localStorage:", e);
+      console.error("Failed to save notes:", e);
     }
   }, [notes]);
 
@@ -67,22 +76,27 @@ export default function Note() {
 
   const handleSaveNote = useCallback((payload) => {
     if (!payload) return;
+
     if (!payload.id) {
-      const id = Date.now();
+      const id = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
       const newNote = normalizeNote({ ...payload, id });
       setNotes((prev) => [newNote, ...prev]);
     } else {
-      setNotes((prev) => prev.map((n) => (n.id === payload.id ? normalizeNote(payload) : n)));
+      setNotes((prev) =>
+        prev.map((n) => (n.id === payload.id ? normalizeNote(payload) : n))
+      );
     }
+
     setViewOpen(false);
     setSelectedNote(null);
-    
   }, []);
 
   const handleArchive = useCallback((id) => {
     setNotes((prev) =>
       prev.map((n) =>
-        n.id === id ? { ...n, status: n.status === "archived" ? "active" : "archived" } : n
+        n.id === id
+          ? { ...n, status: n.status === "archived" ? "active" : "archived" }
+          : n
       )
     );
   }, []);
@@ -90,20 +104,25 @@ export default function Note() {
   const handleDeleteOrRestore = useCallback((id) => {
     setNotes((prev) =>
       prev.map((n) =>
-        n.id === id ? { ...n, status: n.status === "deleted" ? "active" : "deleted" } : n
+        n.id === id
+          ? { ...n, status: n.status === "deleted" ? "active" : "deleted" }
+          : n
       )
     );
   }, []);
 
-  
   const filteredNotes = useMemo(() => {
-    const q = (search || "").toLowerCase().trim();
+    const q = search.toLowerCase().trim();
+
     return notes.filter((note) => {
       const matchesFilter = filter === "all" || note.status === filter;
       if (!matchesFilter) return false;
+
       if (!q) return true;
+
       const title = (note.title || "").toLowerCase();
       const content = (note.content || "").toLowerCase();
+
       return title.includes(q) || content.includes(q);
     });
   }, [notes, filter, search]);
@@ -113,12 +132,20 @@ export default function Note() {
       sx={{
         minHeight: "100vh",
         width: "100%",
-        background: "linear-gradient(135deg, #1a2332 0%, #0f1419 100%)",
+        background: theme.custom.gradients[theme.palette.mode],
+        color: theme.palette.text.primary,
         overflowX: "hidden",
         py: { xs: 2, md: 4 },
+        transition: "all 0.3s ease",
       }}
     >
-      <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3, md: 4 }, color: "#f1f5f9" }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          px: { xs: 2, sm: 3, md: 4 },
+          color: "inherit",
+        }}
+      >
         <Grid container direction="column" spacing={3}>
           <Grid item>
             <NotesHeader />
@@ -157,7 +184,12 @@ export default function Note() {
         </Grid>
       </Container>
 
-      <ViewNoteDialog open={viewOpen} note={selectedNote} onClose={handleCloseView} onSave={handleSaveNote} />
+      <ViewNoteDialog
+        open={viewOpen}
+        note={selectedNote}
+        onClose={handleCloseView}
+        onSave={handleSaveNote}
+      />
     </Grid>
   );
 }

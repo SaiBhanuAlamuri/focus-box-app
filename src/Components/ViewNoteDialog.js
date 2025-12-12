@@ -96,7 +96,7 @@ export default function ViewNoteDialog({ open, note, onClose, onSave }) {
             <Button
               onClick={() => {
                 setIsEditing(false);
-                /* discard changes by re-syncing from prop */ setDraft({
+                 setDraft({
                   id: note?.id ?? null,
                   title: note?.title ?? "",
                   content: note?.content ?? "",

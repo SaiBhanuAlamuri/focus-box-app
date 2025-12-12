@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Grid,
@@ -10,6 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useTheme } from "@mui/material/styles";
 
 export default function NoteBar({
   filter,
@@ -18,24 +18,32 @@ export default function NoteBar({
   onSearchChange,
   onNewNote,
 }) {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
         width: "100%",
+
+        
+        backgroundColor: theme.palette.background.paper,
+
         borderRadius: 3,
-        border: "1px solid rgba(30,64,175,0.08)",
-        boxShadow: "0 10px 30px rgba(2,6,23,0.45)",
-        background:
-          "linear-gradient(135deg, rgba(15,23,42,0.98), rgba(15,23,42,0.96))",
+        border: `1px solid ${theme.palette.divider}`,
+
+        boxShadow:
+          theme.palette.mode === "dark"
+            ? "0 10px 30px rgba(2,6,23,0.45)"
+            : "0 4px 18px rgba(0,0,0,0.08)",
+
         px: { xs: 2, md: 3 },
         py: { xs: 2, md: 2.5 },
         mb: { xs: 3, md: 4 },
+        transition: "all 0.25s ease",
       }}
     >
       <Grid container alignItems="center" justifyContent="center" spacing={10}>
-       
         <Grid item xs={12} md={8} lg={9} sx={{ minWidth: 0 }}>
-          
           <TextField
             fullWidth
             placeholder="Search notes..."
@@ -46,7 +54,8 @@ export default function NoteBar({
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon sx={{ color: "rgba(148,163,184,0.9)" }} />
+                 
+                  <SearchIcon sx={{ color: theme.palette.text.secondary }} />
                 </InputAdornment>
               ),
             }}
@@ -54,17 +63,26 @@ export default function NoteBar({
               minWidth: 0,
               "& .MuiOutlinedInput-root": {
                 borderRadius: 999,
-                bgcolor: "#020617",
-                color: "#e5e7eb",
-                "& fieldset": { borderColor: "rgba(30,64,175,0.12)" },
-                "&:hover fieldset": { borderColor: "rgba(129,140,248,0.25)" },
-                "&.Mui-focused fieldset": { borderColor: "#a855f7" },
+
+           
+                bgcolor:
+                  theme.palette.mode === "dark"
+                    ? theme.palette.background.default
+                    : theme.palette.background.paper,
+
+                color: theme.palette.text.primary,
+                "& fieldset": { borderColor: theme.palette.divider },
+                "&:hover fieldset": {
+                  borderColor: theme.palette.primary.main,
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: theme.palette.primary.main,
+                },
               },
             }}
           />
         </Grid>
 
-       
         <Grid
           item
           xs={12}
@@ -86,18 +104,25 @@ export default function NoteBar({
             sx={{
               borderRadius: 999,
               overflow: "hidden",
-              background: "rgba(255,255,255,0.01)",
-              border: "1px solid rgba(31,41,55,0.06)",
+
+              background:
+                theme.palette.mode === "dark"
+                  ? "rgba(255,255,255,0.03)"
+                  : "rgba(0,0,0,0.04)",
+
+              border: `1px solid ${theme.palette.divider}`,
               "& .MuiToggleButton-root": {
                 border: "none",
                 px: 1.6,
                 py: 0.55,
                 fontSize: ".78rem",
                 textTransform: "none",
-                color: "rgba(209,213,219,0.95)",
+                color: theme.palette.text.secondary,
+
                 "&.Mui-selected": {
-                  color: "#3b0cae",
-                  background: "linear-gradient(135deg,#c4b5fd,#a78bfa)",
+                 
+                  color: theme.palette.primary.contrastText,
+                  background: theme.palette.primary.main,
                 },
               },
             }}
@@ -118,8 +143,11 @@ export default function NoteBar({
               fontSize: ".85rem",
               textTransform: "none",
               fontWeight: 600,
-              background: "linear-gradient(135deg,#c4b5fd,#a78bfa)",
-              color: "#020617",
+
+         
+              background: theme.palette.primary.main,
+              color: theme.palette.primary.contrastText,
+
               whiteSpace: "nowrap",
               minWidth: 0,
             }}

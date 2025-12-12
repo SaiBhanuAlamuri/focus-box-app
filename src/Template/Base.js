@@ -1,7 +1,13 @@
-
-
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Grid,
+  Stack,
+  useTheme,
+  useMediaQuery,
+  Button,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import Header from "../components/Header";
@@ -10,11 +16,12 @@ import AppCard from "../components/cards";
 
 export default function FullScreen() {
   const navigate = useNavigate();
+  const theme = useTheme();
 
-  // helper: safe path from item.link or title fallback
+  const isSm = useMediaQuery(theme.breakpoints.down("sm"));
+
   const resolveLink = (item) => {
     if (item?.link) return item.link;
-    // fallback: make path from title, e.g. "Notes App" -> "/notes-app"
     const slug = item?.title
       ? "/" +
         item.title
@@ -31,62 +38,69 @@ export default function FullScreen() {
     navigate(link);
   };
 
-  // Get Started -> first card, Learn More -> second card (if present)
   const firstLink = items?.[0] ? resolveLink(items[0]) : "/notes";
   const secondLink = items?.[1] ? resolveLink(items[1]) : "/tasks";
 
   return (
-    <>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        bgcolor: "background.default",
+        color: "text.primary",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Header />
+
       <Box
+        component="main"
         sx={{
-          width: "100vw",
-          height: "100vh",
-          background: "linear-gradient(135deg, #1a2332 0%, #0f1419 100%)",
-          display: "flex",
-          flexDirection: "column",
+          width: "100%",
+          px: { xs: 2, sm: 4, md: 6 },
+          py: { xs: 4, md: 8 },
+          flex: 1,
         }}
       >
-        <Header />
-
-        <Box
-          sx={{
-            width: "100%",
-            height: "auto",
-            display: "flex",
-          }}
-        >
-          <Box
+        <Grid container spacing={{ xs: 3, md: 6 }} alignItems="center">
+          <Grid
+            item
+            xs={12}
+            md={5}
             sx={{
-              width: "40%",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
-              paddingLeft: "40px",
-              color: "white",
+              pl: { xs: 0, sm: 2, md: 5 },
+              pr: { xs: 0, md: 4 },
             }}
           >
-            {/* Title */}
             <Typography
               variant="h2"
               sx={{
                 fontWeight: 700,
                 lineHeight: 1.1,
-                fontSize: { xs: "2.8rem", md: "4rem" },
+                fontSize: { xs: "2.2rem", sm: "2.6rem", md: "3.2rem" },
                 mb: 2,
-                marginRight: "300px",
+                maxWidth: { xs: "100%", sm: "80%", md: "460px" },
+                color: "text.primary",
               }}
             >
-              Focus Panel <br /> Track Things
+              Focus Panel
+              <Box component="span" display="block">
+                Track Things
+              </Box>
             </Typography>
 
             <Typography
               variant="body1"
               sx={{
-                opacity: 0.8,
-                maxWidth: "450px",
-                fontSize: "1.05rem",
+                opacity: 0.85,
+                maxWidth: { xs: "100%", sm: "560px" },
+                fontSize: { xs: "0.95rem", md: "1.05rem" },
                 lineHeight: 1.6,
                 mb: 3,
+                color: "text.secondary",
               }}
             >
               FocusPanel helps teams organize tasks, track progress, and
@@ -95,97 +109,135 @@ export default function FullScreen() {
               time — every time.
             </Typography>
 
-            <Box sx={{ display: "flex", gap: 2, marginLeft: "100px" }}>
-              <Box
-                component="button"
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{
+                mt: 1,
+                flexWrap: "wrap",
+                ml: { xs: 0, sm: 0, md: 4 },
+              }}
+            >
+              <Button
+                variant="contained"
+                size={isSm ? "medium" : "large"}
+                onClick={() => handleOpen(firstLink)}
                 sx={{
                   padding: "10px 24px",
                   borderRadius: "8px",
                   fontSize: "1rem",
                   fontWeight: 600,
                   background: "linear-gradient(135deg,#c4b5fd,#a78bfa)",
-                  color: "#1a2332",
+                  color: theme.palette.primary.contrastText,
                   border: "none",
                   cursor: "pointer",
+                  textTransform: "none",
                   "&:hover": {
                     transform: "translateY(-3px)",
-                    boxShadow: "0 8px 20px rgba(167,139,250,0.4)",
+                    boxShadow: "0 8px 20px rgba(167,139,250,0.24)",
                   },
                 }}
-                onClick={() => handleOpen(firstLink)}
               >
                 Get Started
-              </Box>
+              </Button>
 
-              <Box
-                component="button"
+              <Button
+                variant="outlined"
+                size={isSm ? "medium" : "large"}
+                onClick={() => handleOpen(secondLink)}
                 sx={{
                   padding: "10px 24px",
                   borderRadius: "8px",
                   fontSize: "1rem",
                   fontWeight: 600,
-                  background: "rgba(255,255,255,0.1)",
-                  border: "1px solid rgba(255,255,255,0.3)",
-                  color: "white",
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  color: "text.primary",
                   cursor: "pointer",
                   backdropFilter: "blur(6px)",
+                  textTransform: "none",
                   "&:hover": {
-                    background: "rgba(255,255,255,0.2)",
+                    background: "rgba(255,255,255,0.04)",
                   },
                 }}
-                onClick={() => handleOpen(secondLink)}
               >
                 Learn More
-              </Box>
-            </Box>
-          </Box>
+              </Button>
+            </Stack>
+          </Grid>
 
-          <Box
+          <Grid
+            item
+            xs={12}
+            md={7}
             sx={{
-              width: "60%",
               display: "flex",
               flexDirection: "column",
-              padding: "20px",
-              overflow: "visible",
+              pt: { xs: 2, md: 0 },
             }}
           >
-            <Box sx={{ color: "white", mb: 2 }}>
-              <Typography variant="h4" fontWeight={600}>
+            <Box sx={{ mb: 2 }}>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: 600, color: "text.primary" }}
+              >
                 What We Offer
               </Typography>
 
-              <Typography variant="body1" sx={{ opacity: 0.7, mt: 1 }}>
+              <Typography
+                variant="body2"
+                sx={{ opacity: 0.8, mt: 1, color: "text.secondary" }}
+              >
                 FocusPanel brings productivity tools together in one clean
                 dashboard. Select an application below and start organizing your
                 workflow with ease.
               </Typography>
             </Box>
 
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                gap: 2,
-                overflowX: "auto",
-                overflowY: "hidden",
-                paddingY: 1,
-                alignItems: "center",
-              }}
-            >
+            <Grid container spacing={3} sx={{ mt: 1 }}>
               {items.map((item, index) => (
-                <AppCard
+                <Grid
                   key={index}
-                  title={item.title}
-                  description={item.description}
-                  image={item.image}
-                  onOpen={() => handleOpen(resolveLink(item))}
-                  sx={{ width: 200 }}
-                />
+                  item
+                  xs={12}
+                  sm={6}
+                  md={4}
+                  lg={4}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    px: { xs: 0.5, sm: 1, md: 4 },
+                  }}
+                >
+                  <AppCard
+                    title={item.title}
+                    description={item.description}
+                    image={item.image}
+                    onOpen={() => handleOpen(resolveLink(item))}
+                    sx={{
+                      bgcolor: "background.paper",
+                      color: "text.primary",
+                      borderRadius: 2,
+                      width: {
+                        xs: "100%",
+                        sm: "100%",
+                        md: "420px",
+                        lg: "440px",
+                      },
+                      height: {
+                        xs: "auto",
+                        sm: "auto",
+                        md: "500px",
+                        lg: "420px",
+                      },
+                    }}
+                  />
+                </Grid>
               ))}
-            </Box>
-          </Box>
-        </Box>
+            </Grid>
+          </Grid>
+        </Grid>
       </Box>
-    </>
+    </Box>
   );
 }
