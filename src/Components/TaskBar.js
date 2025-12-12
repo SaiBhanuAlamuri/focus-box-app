@@ -1,55 +1,62 @@
+
 import {
   Box,
   Typography,
   TextField,
   Button,
   Stack,
-  Paper,
   Grid,
 } from "@mui/material";
+import { useState } from "react";
+import { Snackbar, Alert } from "@mui/material";
 
-export default function TaskBar() {
+
+export default function TaskBar({ onAddTask }) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [errorOpen, setErrorOpen] = useState(false);
+
+
+
+
+  const addTaskHandler = () => {
+     if (!title.trim() || !description.trim()) {
+    setErrorOpen(true);  
+    return;
+  }
+
+    onAddTask(title, description);
+
+    setTitle("");
+    setDescription("");
+  };
   return (
-    <Grid container direction={"row"} sx={{ width: "100%", height: "auto" }} >
+    <Grid container direction={"row"} sx={{ width: "100%", height: "auto" }}>
       <Grid
         item
         xs={12}
         sx={{
           width: "100%",
           minHeight: "250px",
-          height: "auto",
-          // backgroundColor: "blue",
           flexDirection: "column",
           alignItems: "center",
-          // justifyContent: "center",
           display: "flex",
         }}
       >
         <Stack spacing={0.5} textAlign="center">
           <Typography
-            variant="h3"
             fontSize={45}
             sx={{
-              background: "linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%)",
+              background: "linear-gradient(135deg, #c4b5fd, #a78bfa)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
               fontWeight: 700,
             }}
           >
             Task Manager
           </Typography>
 
-          <Typography
-            variant="body1"
-            sx={{
-              opacity: 0.7,
-              fontSize: "18px",
-              // lineHeight: 1.4,
-              color: "#d2d2d2",
-              fontWeight: "500",
-            }}
-          >
+          <Typography sx={{ opacity: 0.7, fontSize: "18px", color: "#d2d2d2" }}>
             Organize your work and boost your productivity
           </Typography>
         </Stack>
@@ -62,30 +69,20 @@ export default function TaskBar() {
             width: "60%",
             p: 3,
             mt: 1,
-
             background: "rgba(0,0,0,0.08)",
-            backdropFilter: "blur(10px)",
-
             border: "2px solid #a78bfa",
             borderRadius: "20px",
-
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
-
-            transition: "transform 0.9s ease, box-shadow 0.9s ease",
-
-            "&:hover": {
-              transform: "translateY(-4px)",
-              boxShadow: "0 12px 40px rgba(167, 139, 250, 0.3)",
-            },
+            boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
           }}
         >
           <Grid item xs={12}>
             <TextField
               fullWidth
               label="Task Title"
-              inputProps={{ maxLength: 100 }}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               sx={{
-                "& .MuiOutlinedInput-root": {
+                 "& .MuiOutlinedInput-root": {
                   background: "rgba(255,255,255,0.15)",
                   borderRadius: "10px",
                   color: "white",
@@ -107,13 +104,14 @@ export default function TaskBar() {
             />
           </Grid>
 
-         
           <Grid item xs={12}>
             <TextField
               fullWidth
               label="Task Description"
               multiline
               minRows={2}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   background: "rgba(255,255,255,0.15)",
@@ -137,21 +135,10 @@ export default function TaskBar() {
             />
           </Grid>
 
-          {/* Buttons */}
-
-          <Grid
-            item
-            sx={{
-              width: {
-                xs: "100%",
-                sm: "40%",
-                md: "20%",
-                lg: "12%",
-              },
-            }}
-          >
+          <Grid item sx={{ width: { xs: "100%", sm: "40%", md: "20%" } }}>
             <Button
               fullWidth
+              onClick={addTaskHandler}
               variant="contained"
               sx={{
                 height: "45px",
@@ -174,9 +161,39 @@ export default function TaskBar() {
           </Grid>
         </Grid>
       </Grid>
+
+
+
+       <Snackbar
+  open={errorOpen}
+  autoHideDuration={3000}
+  onClose={() => setErrorOpen(false)}
+  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+  sx={{
+    mt: 6,
+    mr: 2,
+  }}
+>
+  <Alert
+    onClose={() => setErrorOpen(false)}
+    severity="error"
+    variant="filled"
+    sx={{
+      width: "100%",
+      background: "rgba(255, 77, 77, 0.25)", 
+      backdropFilter: "blur(10px)",
+      border: "1px solid rgba(255, 99, 99, 0.4)",
+      color: "white",
+      fontWeight: 600,
+      boxShadow: "0 8px 20px rgba(255, 0, 0, 0.25)",
+      borderRadius: "12px",
+      textTransform: "none",
+    }}
+  >
+    ❗ Please enter both Title and Description!
+  </Alert>
+</Snackbar>
+
     </Grid>
-
-
-
   );
 }

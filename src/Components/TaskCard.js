@@ -1,3 +1,5 @@
+
+
 import { Box, Typography, Chip, Button, Stack } from "@mui/material";
 
 export default function TaskCard({
@@ -16,10 +18,10 @@ export default function TaskCard({
   return (
     <Box
       sx={{
-        width: "300px",
-        minHeight: "200px",
-        maxWidth: "400px", // Prevents card from stretching based on description
-        p: 2.5,
+        width: "100%",
+        maxWidth: 350,             
+        minHeight: 230,             
+        p: 2,
         borderRadius: "16px",
         background: "rgba(37,37,49,0.4)",
         border: "1px solid rgba(255,255,255,0.1)",
@@ -33,7 +35,7 @@ export default function TaskCard({
 
         "&:hover": {
           transform: "translateY(-4px)",
-          boxShadow: "0 12px 40px rgba(167, 139, 250, 0.3)",
+          boxShadow: "0 12px 40px rgba(167,139,250,0.3)",
         },
 
         "&::before": {
@@ -47,24 +49,23 @@ export default function TaskCard({
         },
       }}
     >
-      {/* TITLE & STATUS - Reduced spacing */}
-      <Box 
-        sx={{ 
-          display: "flex", 
+   
+      <Box
+        sx={{
+          display: "flex",
           justifyContent: "space-between",
-          alignItems: "flex-start",
-          gap: 2,
-          mb: 1.5, // Reduced from previous spacing
+          gap: 1,
+          mb: 1,
+          flexWrap: "wrap",    
         }}
       >
         <Typography
           sx={{
-            fontSize: "1.25rem",
+            fontSize: "1.2rem",
             fontWeight: 700,
             color: "white",
-            lineHeight: 1.3,
-            wordBreak: "break-word",
             flex: 1,
+           
           }}
         >
           {task.title}
@@ -77,83 +78,68 @@ export default function TaskCard({
             color: "black",
             fontWeight: 600,
             textTransform: "capitalize",
-            flexShrink: 0,
-            height: "28px",
+            height: 26,
           }}
         />
       </Box>
 
-      {/* DESCRIPTION - Controlled spacing with line clamp */}
+     
       <Typography
         sx={{
           color: "#d4d4d4",
           fontSize: "0.95rem",
           lineHeight: 1.5,
-          mb: 1.5, // Consistent spacing
+          mb: 1,
           display: "-webkit-box",
-          WebkitLineClamp: 3, // Limits to 3 lines
+          WebkitLineClamp: 3,
           WebkitBoxOrient: "vertical",
           overflow: "hidden",
-          textOverflow: "ellipsis",
         }}
       >
-        {task.description || "No description"}
+       {task.description || "No description"}
       </Typography>
 
-      {/* DATE - Reduced spacing */}
+   
       <Typography
         sx={{
-          fontSize: "0.85rem",
-          color: "#999",
-          mb: 2, // Reduced spacing before buttons
+          fontSize: "0.8rem",
+          color: "#aaa",
+          mb: 2,
         }}
       >
         Created: {task.createdAt}
       </Typography>
 
-      {/* ACTION BUTTONS - Uses mt: auto to push to bottom */}
       <Stack
         direction="row"
         spacing={1}
-        sx={{ 
-          mt: "auto", // Pushes buttons to bottom
-          flexWrap: "wrap",
+        sx={{
+          mt: "auto",
+          flexWrap: "wrap",   
           gap: 1,
         }}
       >
         {task.status !== "deleted" && (
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => onEdit(task.id)}
+          <Button size="small" variant="outlined"
             sx={{
               borderColor: "#a78bfa",
               color: "#a78bfa",
               textTransform: "none",
-              "&:hover": { 
-                borderColor: "#c4b5fd", 
-                color: "#c4b5fd",
-                background: "rgba(167, 139, 250, 0.1)",
-              },
+              "&:hover": { background: "rgba(167,139,250,0.1)" },
             }}
+            onClick={() => onEdit(task.id)}
           >
             Edit
           </Button>
         )}
 
         {task.status === "in-progress" && (
-          <Button
-            variant="outlined"
-            size="small"
+          <Button size="small" variant="outlined"
             sx={{
               borderColor: "#4ade80",
               color: "#4ade80",
               textTransform: "none",
-              "&:hover": { 
-                borderColor: "#22c55e", 
-                color: "#22c55e",
-                background: "rgba(74, 222, 128, 0.1)",
-              },
+              "&:hover": { background: "rgba(74,222,128,0.1)" },
             }}
             onClick={() => onComplete(task.id)}
           >
@@ -162,18 +148,12 @@ export default function TaskCard({
         )}
 
         {task.status !== "deleted" && (
-          <Button
-            variant="outlined"
-            size="small"
-            sx={{ 
-              borderColor: "#ef4444", 
+          <Button size="small" variant="outlined"
+            sx={{
+              borderColor: "#ef4444",
               color: "#ef4444",
               textTransform: "none",
-              "&:hover": {
-                borderColor: "#dc2626",
-                color: "#dc2626",
-                background: "rgba(239, 68, 68, 0.1)",
-              },
+              "&:hover": { background: "rgba(239,68,68,0.1)" },
             }}
             onClick={() => onDelete(task.id)}
           >
@@ -182,18 +162,12 @@ export default function TaskCard({
         )}
 
         {task.status === "deleted" && (
-          <Button
-            variant="outlined"
-            size="small"
-            sx={{ 
-              borderColor: "#9ca3af", 
+          <Button size="small" variant="outlined"
+            sx={{
+              borderColor: "#9ca3af",
               color: "#9ca3af",
               textTransform: "none",
-              "&:hover": {
-                borderColor: "#d1d5db",
-                color: "#d1d5db",
-                background: "rgba(156, 163, 175, 0.1)",
-              },
+              "&:hover": { background: "rgba(156,163,175,0.1)" },
             }}
             onClick={() => onRestore(task.id)}
           >
