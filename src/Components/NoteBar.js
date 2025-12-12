@@ -29,7 +29,7 @@ export default function NoteBar({
         backgroundColor: theme.palette.background.paper,
 
         borderRadius: 3,
-        border: `1px solid ${theme.palette.divider}`,
+        border: `2px solid #AA8FFB`,
 
         boxShadow:
           theme.palette.mode === "dark"
@@ -63,7 +63,8 @@ export default function NoteBar({
               minWidth: 0,
               "& .MuiOutlinedInput-root": {
                 borderRadius: 999,
-
+                borderWidth: "6px",
+                borderColor: theme.palette.divider,
            
                 bgcolor:
                   theme.palette.mode === "dark"

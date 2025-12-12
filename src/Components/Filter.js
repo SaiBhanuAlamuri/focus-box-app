@@ -36,7 +36,7 @@ export default function Filters({
         width: "100%",
         display: "flex",
         justifyContent: "center",
-        px: { xs: 2, sm: 4, md: 6, lg: 8 },
+        px: { xs: 2, sm: 4, md: 6, lg: 8},
         mt: 3,
       }}
     >
