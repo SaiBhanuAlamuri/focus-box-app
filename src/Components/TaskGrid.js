@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import TaskCard from "./TaskCard";
 
 export default function TaskGrid({
-  tasks = [],
+  tasks = {tasks},
   onEdit,
   onComplete,
   onDelete,
@@ -11,14 +11,19 @@ export default function TaskGrid({
   return (
     <Box
       sx={{
-        width: "75%",
-        px: { xs: 2, sm: 4, md: 10, lg: 15 },
-        mt: 4,
+        width: "100%",
+        maxWidth: "1000px",
         mx: "auto",
-       
+        mt: 4,
+        px: 2, 
       }}
     >
-      <Grid container spacing={3} justifyContent={'center'}>
+      <Grid
+        container
+        spacing={3}
+        justifyContent="center"
+        alignItems="flex-start"
+      >
         {tasks.map((task) => (
           <Grid
             key={task.id}
@@ -27,15 +32,20 @@ export default function TaskGrid({
             sm={6}
             md={4}
             lg={3}
-            sx={{ display: "flex", justifyContent: "center" }}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
-            <TaskCard
-              task={task}
-              onEdit={onEdit}
-              onComplete={onComplete}
-              onDelete={onDelete}
-              onRestore={onRestore}
-            />
+            <Box sx={{ width: "100%", maxWidth: 300 }}>
+              <TaskCard
+                task={task}
+                onEdit={onEdit}
+                onComplete={onComplete}
+                onDelete={onDelete}
+                onRestore={onRestore}
+              />
+            </Box>
           </Grid>
         ))}
       </Grid>
