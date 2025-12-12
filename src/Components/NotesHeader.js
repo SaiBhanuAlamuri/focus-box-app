@@ -20,10 +20,11 @@ const NotesHeader = ({ title = "FocuZ Note" }) => {
       justifyContent="space-between"
       sx={{
         mb: { xs: 2, sm: 3, md: 4 },
-        flexWrap: "wrap",
-        rowGap: { xs: 1.5, sm: 0 },
+        flexWrap: "wrap",   
+        rowGap: { xs: 1.5, sm: 0 }
       }}
     >
+
       <Grid item sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
         <Box
           sx={{
@@ -35,12 +36,10 @@ const NotesHeader = ({ title = "FocuZ Note" }) => {
             justifyContent: "center",
             background: "radial-gradient(circle at 20% 20%, #a855f7, #4f46e5)",
             boxShadow: "0 0 20px rgba(168, 85, 247, 0.6)",
-            flexShrink: 0,
+            flexShrink: 0     
           }}
         >
-          <NoteOutlinedIcon
-            sx={{ fontSize: { xs: 18, sm: 20 }, color: "#fff" }}
-          />
+          <NoteOutlinedIcon sx={{ fontSize: { xs: 18, sm: 20 }, color: "#fff" }} />
         </Box>
 
         <Typography
@@ -52,12 +51,13 @@ const NotesHeader = ({ title = "FocuZ Note" }) => {
             whiteSpace: "nowrap",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            maxWidth: { xs: "160px", sm: "100%" },
+            maxWidth: { xs: "160px", sm: "100%" }
           }}
         >
           {title}
         </Typography>
       </Grid>
+
 
       <Grid item>
         <IconButton
@@ -65,7 +65,7 @@ const NotesHeader = ({ title = "FocuZ Note" }) => {
           sx={{
             width: { xs: 46, sm: 54 },
             height: { xs: 24, sm: 28 },
-            borderRadius: 99,
+            borderRadius: 999,
             background:
               "linear-gradient(135deg, rgba(168,85,247,0.35), rgba(129,140,248,0.65))",
             boxShadow: "0 0 18px rgba(168,85,247,0.8)",
@@ -77,13 +77,9 @@ const NotesHeader = ({ title = "FocuZ Note" }) => {
           }}
         >
           {dark ? (
-            <Brightness4Icon
-              sx={{ fontSize: { xs: 15, sm: 18 }, color: "#fff" }}
-            />
+            <Brightness4Icon sx={{ fontSize: { xs: 15, sm: 18 }, color: "#fff" }} />
           ) : (
-            <Brightness7Icon
-              sx={{ fontSize: { xs: 15, sm: 18 }, color: "#fff" }}
-            />
+            <Brightness7Icon sx={{ fontSize: { xs: 15, sm: 18 }, color: "#fff" }} />
           )}
         </IconButton>
       </Grid>

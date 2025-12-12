@@ -18,7 +18,7 @@ export default function NoteContext() {
           px: { xs: 2, sm: 3, md: 0 },
         }}
       >
-        {/* TITLE */}
+        
         <Box
           sx={{
             display: "flex",

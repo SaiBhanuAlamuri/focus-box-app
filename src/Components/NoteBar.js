@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Grid,
@@ -10,7 +11,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function NoteBarSimple({
+export default function NoteBar({
   filter,
   onFilterChange,
   search,
@@ -29,16 +30,17 @@ export default function NoteBarSimple({
         px: { xs: 2, md: 3 },
         py: { xs: 2, md: 2.5 },
         mb: { xs: 3, md: 4 },
-        boxSizing: "border-box",
       }}
     >
-      <Grid container alignItems="center" spacing={2}>
-        <Grid item xs={12} md={7} sx={{ minWidth: 0 }} lg={2}>
+      <Grid container alignItems="center" justifyContent="center" spacing={10}>
+       
+        <Grid item xs={12} md={8} lg={9} sx={{ minWidth: 0 }}>
+          
           <TextField
             fullWidth
             placeholder="Search notes..."
             variant="outlined"
-            size="large"
+            size="small"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             InputProps={{
@@ -51,7 +53,6 @@ export default function NoteBarSimple({
             sx={{
               minWidth: 0,
               "& .MuiOutlinedInput-root": {
-                maxWidth: { xs: "100%", sm: "100%", md: "500px", lg: "650px" },
                 borderRadius: 999,
                 bgcolor: "#020617",
                 color: "#e5e7eb",
@@ -63,79 +64,68 @@ export default function NoteBarSimple({
           />
         </Grid>
 
+       
         <Grid
           item
           xs={12}
-          md={5}
+          md={4}
+          lg={3}
           sx={{
-            display: "flex",
-            justifyContent: { xs: "flex-start", md: "flex-end" },
-            alignItems: "center",
-
-            gap: 1,
             minWidth: 0,
+            display: "flex",
+            justifyContent: { xs: "center", md: "flex-end" },
+            alignItems: "center",
+            gap: 1,
+            flexWrap: "wrap",
           }}
         >
-          <Box
+          <ToggleButtonGroup
+            value={filter}
+            exclusive
+            onChange={(_, v) => v && onFilterChange(v)}
             sx={{
-              display: "flex",
-              gap: 2,
-              alignItems: "center",
-              flexWrap: "wrap",
-
-              "& .MuiToggleButtonGroup-root": { flexShrink: 1 },
+              borderRadius: 999,
+              overflow: "hidden",
+              background: "rgba(255,255,255,0.01)",
+              border: "1px solid rgba(31,41,55,0.06)",
+              "& .MuiToggleButton-root": {
+                border: "none",
+                px: 1.6,
+                py: 0.55,
+                fontSize: ".78rem",
+                textTransform: "none",
+                color: "rgba(209,213,219,0.95)",
+                "&.Mui-selected": {
+                  color: "#3b0cae",
+                  background: "linear-gradient(135deg,#c4b5fd,#a78bfa)",
+                },
+              },
             }}
           >
-            <ToggleButtonGroup
-              value={filter}
-              exclusive
-              onChange={(_, value) => value && onFilterChange(value)}
-              sx={{
-                borderRadius: 999,
-                overflow: "hidden",
-                background: "rgba(255,255,255,0.01)",
-                border: "1px solid rgba(31,41,55,0.06)",
-                "& .MuiToggleButton-root": {
-                  border: "none",
-                  px: 5.8,
-                  py: 0.55,
-                  fontSize: ".78rem",
-                  textTransform: "none",
-                  color: "rgba(209,213,219,0.95)",
-                  "&.Mui-selected": {
-                    color: "#3b0cae",
-                    background: "linear-gradient(135deg,#c4b5fd,#a78bfa)",
-                  },
-                },
-              }}
-            >
-              <ToggleButton value="active">Active</ToggleButton>
-              <ToggleButton value="archived">Archived</ToggleButton>
-              <ToggleButton value="deleted">Deleted</ToggleButton>
-              <ToggleButton value="all">All</ToggleButton>
-            </ToggleButtonGroup>
+            <ToggleButton value="active">Active</ToggleButton>
+            <ToggleButton value="archived">Archived</ToggleButton>
+            <ToggleButton value="deleted">Deleted</ToggleButton>
+            <ToggleButton value="all">All</ToggleButton>
+          </ToggleButtonGroup>
 
-            <Button
-              onClick={() => typeof onNewNote === "function" && onNewNote()}
-              variant="contained"
-              sx={{
-                borderRadius: 999,
-                px: 5.5,
-                py: 0.8,
-                fontSize: ".85rem",
-                textTransform: "none",
-                fontWeight: 600,
-                background: "linear-gradient(135deg,#c4b5fd,#a78bfa)",
-                color: "#020617",
-                boxShadow: "0 10px 30px rgba(167,139,250,0.35)",
-                whiteSpace: "nowrap",
-
-                minWidth: 0,
-              }}
-            >
-              + New Note
-            </Button>
-          </Box>
+          <Button
+            onClick={() => typeof onNewNote === "function" && onNewNote()}
+            variant="contained"
+            sx={{
+              borderRadius: 999,
+              px: { xs: 2.2, md: 3 },
+              py: 0.75,
+              fontSize: ".85rem",
+              textTransform: "none",
+              fontWeight: 600,
+              background: "linear-gradient(135deg,#c4b5fd,#a78bfa)",
+              color: "#020617",
+              whiteSpace: "nowrap",
+              minWidth: 0,
+            }}
+          >
+            + New Note
+          </Button>
         </Grid>
       </Grid>
     </Box>
